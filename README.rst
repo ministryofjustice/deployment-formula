@@ -3,11 +3,11 @@ deployment-formula
 
 Simplified deployment using salt. Heavily inspired by capistrano.
 In one state function you combine:
-- clone git repo
-- build application (i.e. bundle install or virtualenv && ./bin/pip install)
-- test application
-- link to application/current
-- restart service
+ - clone git repo
+ - build application (i.e. bundle install or virtualenv && ./bin/pip install)
+ - test application
+ - link to application/current
+ - restart service
 
 
 On rev
