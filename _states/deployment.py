@@ -64,6 +64,7 @@ def ensure(name,
            test_cmd=None,  # executed to verify deploy (before linking)
            on_failed_cmd=None,  # executed on failed deploy
            activate_cmd=None,  # i.e. to tell supervisor to restart the app
+           keep=5,  # how many versions should we keep
            ):
     """
     Ensures that the specific revision of application is up and running on the server.
@@ -79,7 +80,9 @@ def ensure(name,
             ret['result'] = None
             ret['comment'] = 'Calling deployment.deploy'
             return
+        __salt__['deployment.limit_history'](name, keep=keep)
         new_current = __salt__['deployment.deploy'](name, repository=repository, rev=rev, user=user, deploy_cmd=deploy_cmd, test_cmd=test_cmd, on_failed_cmd=on_failed_cmd, activate_cmd=activate_cmd)
+        __salt__['deployment.limit_history'](name, keep=keep)
         ret['changes']['new_current'] = new_current
 
     ret = {

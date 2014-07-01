@@ -267,7 +267,7 @@ def get_meta(name, tag):
 
 def available(name):
     """
-    lists all installed releases in sorted order
+    returns (OrderedDict) all installed releases in sorted order
     with information if they succeeded (taken from META file)
     """
     tags = OrderedDict()
@@ -286,7 +286,7 @@ def available(name):
 
 def status(name):
     """
-    returns list of all available releases marking which one is currently selected
+    returns ordered list (OrderedDict) of all available releases marking which one is currently selected
     """
     av = available(name)
     try:
@@ -294,7 +294,28 @@ def status(name):
         av[current_tag]['current'] = True
     except CommandExecutionError:
         pass
+    except KeyError:
+        pass
     return av
+
+
+def limit_history(name, keep=5):
+    """
+    removes all unused revisions except for number you want to keep (default 5)
+    """
+    av = status(name)
+    tags_to_kill = av.keys()[:-keep]
+    removed = []
+    for tag in tags_to_kill:
+        release = av[tag]
+        if release.get('current', False):
+           pass  # keep me
+        else:
+            __salt__['file.remove'](release['path'])
+            removed.append(release)
+            log.info('Removed old and unused deployment: {0}'.format(tag))
+
+    return removed
 
 
 def select(name, tag):
