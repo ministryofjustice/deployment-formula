@@ -3,11 +3,20 @@ deployment-formula
 
 Simplified deployment using salt. Heavily inspired by capistrano.
 In one state function you combine:
- - clone git repo
- - build application (i.e. bundle install or virtualenv && ./bin/pip install)
- - test application
- - link to application/current
- - restart service
+- clone git repo
+- build application (i.e. bundle install or virtualenv && ./bin/pip install)
+- test application (optional)
+- if failed that execute specified command (optional)
+- link to application/current
+- link log directory
+- restart service (optional)
+
+Where each following step will only be triggered by success of a previous one.
+
+By default state ensures that only 5 latest deployments are kept on server.
+
+PS: There is whole bunch of rollback roll forward module functions to have way more granular control.
+See module docstrings for more help.
 
 
 On rev
@@ -21,7 +30,7 @@ If you pass tag or version hash than it will stick to this version.
 example states usage
 --------------------
 
-let's create application user::
+Let's create application user::
 
     your_appslug:
       user:
@@ -30,7 +39,7 @@ let's create application user::
         - shell: /bin/bash
 
 
-than it's time to get create directory structure::
+...than it's time to get create directory structure::
 
     your_appslug-skeleton:
       deployment.skeleton:
@@ -39,7 +48,7 @@ than it's time to get create directory structure::
         - group: your_appslug
 
 
-and finally let's ensure that app is deployed::
+...and finally let's ensure that app is deployed::
 
     deploy-pvb:
       deployment.ensure:
@@ -56,5 +65,6 @@ and finally let's ensure that app is deployed::
 
 notes
 -----
-It's nice to combine deployment.ensure with watch_in: service restart so that deployment will trigger application start.
-Other way to start the service is to pass service restart command as parameter to deployment.ensure.
+It's nice to combine deployment.ensure with `watch_in: service restart` so that deployment will trigger application
+restart. Other way to start the service is to pass service restart command as parameter to deployment.ensure.
+See `activate_cmd` parameter.
