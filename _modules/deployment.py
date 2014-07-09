@@ -254,14 +254,18 @@ def current(name):
 def get_meta(name, tag):
     """
     returns meta data for specific tag
+    it's gonna always update meta by adding to extra fields:
+    - tag
+    - path
     """
     try:
         with open(os.path.join(name, 'releases', tag, 'META')) as f:
             ret = yaml.load(f)
-            ret['tag'] = tag
-            ret['path'] = os.path.join(name, 'releases', tag)
     except IOError:
         ret = {}
+
+    ret['tag'] = tag
+    ret['path'] = os.path.join(name, 'releases', tag)
     return ret
 
 
