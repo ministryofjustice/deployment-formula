@@ -86,6 +86,7 @@ def deploy(name,
     """
     meta = {
         'commit': None,
+        'repository': repository,
         'rev': rev,
         'scm': 'git',
         'deploy_cmd': None,
