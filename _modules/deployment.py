@@ -1,5 +1,5 @@
 import os
-import yaml
+import json
 import logging
 
 from datetime import datetime
@@ -105,7 +105,7 @@ def deploy(name,
 
     def save_meta():
         with open(os.path.join(directory, 'META'), mode='w') as f:
-            f.write(yaml.dump(meta, default_flow_style=False))
+            f.write(json.dumps(meta, sort_keys=True, indent=2))
 
     if not tag:
         tag = generate_tag()
@@ -261,7 +261,7 @@ def get_meta(name, tag):
     """
     try:
         with open(os.path.join(name, 'releases', tag, 'META')) as f:
-            ret = yaml.load(f)
+            ret = json.loads(f)
     except IOError:
         ret = {}
 
