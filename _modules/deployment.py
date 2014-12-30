@@ -261,7 +261,7 @@ def get_meta(name, tag):
     """
     try:
         with open(os.path.join(name, 'releases', tag, 'META')) as f:
-            ret = json.loads(f)
+            ret = json.load(f)
     except IOError:
         ret = {}
 
