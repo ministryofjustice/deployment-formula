@@ -66,13 +66,15 @@ def generate_tag():
 def deploy(name,
            repository,
            rev=None,
-           user=None,  # falls back to releases directory owner
-           group=None,  # falls back to releases directory group
-           deploy_cmd=None,  # executed on deploy
-           test_cmd=None,  # executed to verify deploy (before linking)
+           user=None,           # falls back to releases directory owner
+           group=None,          # falls back to releases directory group
+           deploy_cmd=None,     # executed on deploy
+           test_cmd=None,       # executed to verify deploy (before linking)
            on_failed_cmd=None,  # executed on failed deploy
-           activate_cmd=None,  # i.e. to tell supervisor to restart the app
-           tag=None,  # overwrite to generate deployment tags yourself (i.e. to orchestrate from overstate)
+           activate_cmd=None,   # i.e. to tell supervisor to restart the app
+           tag=None,            # overwrite to generate deployment tags yourself (i.e. to orchestrate from overstate)
+           version_number=None, # informative only: current version
+           build_tag=None,      # informative only: CI build tag / name
            ):
     """
     deploys specific repo, and commit
@@ -92,6 +94,9 @@ def deploy(name,
         'deploy_cmd': None,
         'test_cmd': None,
         'ok': False,
+        'version_number': version_number,
+        'build_date': datetime.now().isoformat(),
+        'build_tag': build_tag
     }
 
     def on_failed():

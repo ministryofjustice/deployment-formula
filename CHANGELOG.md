@@ -1,3 +1,7 @@
+## Version 1.1.x
+
+* More information displayed in META file
+
 ## Version 1.1.0
 
 * Change META file to JSON format, more generally parsable in stdlibs.
